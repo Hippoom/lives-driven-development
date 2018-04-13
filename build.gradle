@@ -21,12 +21,9 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'jacoco'
 
-apply plugin: "com.gorylenko.gradle-git-properties"
 apply from: "${rootProject.projectDir}/gradle/checkstyle.gradle"
 apply from: "${rootProject.projectDir}/gradle/findbugs.gradle"
 apply from: "${rootProject.projectDir}/gradle/git-hooks.gradle"
-apply from: "${rootProject.projectDir}/gradle/build-version.gradle"
-apply from: "${rootProject.projectDir}/gradle/boot-info.gradle"
 
 group = 'com.github.hippoom'
 
