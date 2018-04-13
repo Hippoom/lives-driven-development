@@ -1,0 +1,194 @@
+buildscript {
+    ext {
+        flywayVersion = '3.2.1'
+        hibernateVersion = '5.0.12.Final'
+        spockVersion = '1.1-groovy-2.4'
+    }
+
+    dependencies {
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.20"
+    }
+}
+
+plugins {
+    id "io.spring.dependency-management" version "1.0.3.RELEASE"
+    id 'org.springframework.boot' version "1.5.9.RELEASE"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.7"
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'jacoco'
+
+apply plugin: "com.gorylenko.gradle-git-properties"
+apply from: "${rootProject.projectDir}/gradle/checkstyle.gradle"
+apply from: "${rootProject.projectDir}/gradle/findbugs.gradle"
+apply from: "${rootProject.projectDir}/gradle/git-hooks.gradle"
+apply from: "${rootProject.projectDir}/gradle/build-version.gradle"
+apply from: "${rootProject.projectDir}/gradle/boot-info.gradle"
+
+group = 'com.github.hippoom'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+tasks.withType(JavaCompile) { options.encoding = 'utf-8' }
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.spring.platform:platform-bom:Brussels-SR5"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.SR4"
+    }
+
+    dependencies {
+        dependency "org.projectlombok:lombok:1.16.18"
+        dependency "com.google.code.findbugs:annotations:3.0.1"
+    }
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok"
+    testCompileOnly "org.projectlombok:lombok"
+    compileOnly 'com.google.code.findbugs:annotations'
+    testCompileOnly 'com.google.code.findbugs:annotations'
+
+    // web
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile("org.springframework.boot:spring-boot-starter-hateoas")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    // security
+    compile "org.springframework.boot:spring-boot-starter-security"
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.3.RELEASE'
+//    compile group: 'org.springframework.session', name: 'spring-session', version: '1.3.1.RELEASE'
+//    compile('org.springframework.session:spring-session-data-redis')
+
+    // jdbc
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    compile "org.flywaydb:flyway-core:${flywayVersion}"
+    compile "com.querydsl:querydsl-jpa:4.0.9"
+    testCompile 'com.h2database:h2:1.4.192'
+//    testCompile("org.flywaydb.flyway-test-extensions:flyway-spring-test:${flywayVersion}") {
+//        exclude group: 'org.slf4j' //avoid multiple slf4j impl
+//    }
+
+    // tests frameworks
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile group: 'org.spockframework', name: 'spock-core', version: spockVersion
+    testCompile group: 'org.spockframework', name: 'spock-spring', version: spockVersion
+    testCompile('com.athaydes:spock-reports:1.2.12') {
+        exclude group: 'org.codehaus.groovy'
+        exclude group: 'org.spockframework'
+    }
+    // to mock concrete class
+    testCompile group: 'net.bytebuddy', name: 'byte-buddy', version: '1.7.9'
+    testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.12'
+    testCompile group: 'com.github.hippoom', name: 'test-data-builder', version: '0.4.0'
+
+    // distributed trace
+    compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+
+}
+
+test {
+    exclude '**/deployment/*'
+    exclude '**/specs/*'
+    exclude '**/*LearningTest*'
+    exclude '**/*Console*'
+    exclude '**/*AcceptanceTest*'
+}
+
+jacoco {
+    toolVersion = "0.8.0"
+}
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['**/model/**/Q**'])
+        })
+    }
+}
+
+test.finalizedBy(jacocoTestReport)
+
+task deploymentTest(type: Test) {
+    // this task will be executed in isolation since all artifacts have been built and deployed
+    dependsOn = []
+
+    include '**/deployment/*'
+
+    outputs.upToDateWhen { false }//force to always rerun
+
+    reports.html.destination = file("$buildDir/reports/tests/deployment")
+}
+
+task acceptanceTest(type: Test) {
+    // this task will be executed in isolation since all artifacts have been built and deployed
+    dependsOn = []
+
+    include '**/acceptance/AtlasAcceptanceTest*'
+
+    outputs.upToDateWhen { false }//force to always rerun
+
+    reports.html.destination = file("$buildDir/reports/tests/acceptance")
+}
+
+idea {
+    project {
+
+        jdkName = '1.8'
+        languageLevel = '1.8'
+
+        ipr.withXml { xmlFile ->
+            // setup Git root
+            xmlFile.asNode().component.find { it.@name == 'VcsDirectoryMappings' }.replaceNode {
+                component(name: 'VcsDirectoryMappings') {
+                    mapping(directory: "", vcs: "Git")
+                    mapping(directory: "\$PROJECT_DIR\$", vcs: 'Git')
+                }
+            }
+
+            // setup annotationProcessing for lombok
+            xmlFile.asNode().component.find {
+                it.@name == 'CompilerConfiguration'
+            }.annotationProcessing.replaceNode {
+                annotationProcessing() {
+                    profile(default: "true", name: "Default", enabled: 'true')
+                }
+            }
+        }
+    }
+
+    module {
+        scopes.COMPILE.plus += [configurations.compileOnly]
+        sourceDirs += file('src/querydsl/java')
+    }
+}
+
+querydsl {
+    jpa = true
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.2.1'
+}
+
+jar {
+    archiveName = "${rootProject.name}.jar"
+}
+
+springBoot {
+    executable = true
+}
