@@ -19,7 +19,7 @@ public class WeChatMiniAppConfiguration {
     @Bean
     public WxMaConfig maConfig() {
         WxMaInMemoryConfig config = new WxMaInMemoryConfig();
-        config.setAppid(this.properties.getAppid());
+        config.setAppid(this.properties.getAppId());
         config.setSecret(this.properties.getSecret());
         config.setToken(this.properties.getToken());
         config.setAesKey(this.properties.getAesKey());

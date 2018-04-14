@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "wechat.miniapp")
 public class WeChatMiniAppProperties {
-    private String appid;
+    private String appId;
     private String secret;
     private String token;
     private String aesKey;

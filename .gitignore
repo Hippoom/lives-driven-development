@@ -23,3 +23,4 @@ src/querydsl
 
 # boot
 application-dev.yml
+application-dev.properties
