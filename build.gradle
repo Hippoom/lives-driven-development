@@ -3,10 +3,12 @@ buildscript {
         flywayVersion = '3.2.1'
         hibernateVersion = '5.0.12.Final'
         spockVersion = '1.1-groovy-2.4'
+        springCloudContractVersion = "1.2.3.RELEASE"
     }
 
     dependencies {
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.20"
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudContractVersion}"
     }
 }
 
@@ -24,6 +26,7 @@ apply plugin: 'jacoco'
 apply from: "${rootProject.projectDir}/gradle/checkstyle.gradle"
 apply from: "${rootProject.projectDir}/gradle/findbugs.gradle"
 apply from: "${rootProject.projectDir}/gradle/git-hooks.gradle"
+apply from: "${rootProject.projectDir}/gradle/contract.gradle"
 
 group = 'com.github.hippoom'
 
@@ -45,6 +48,7 @@ dependencyManagement {
     imports {
         mavenBom "io.spring.platform:platform-bom:Brussels-SR5"
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.SR4"
+        mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}"
     }
 
     dependencies {
@@ -63,6 +67,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile("org.springframework.boot:spring-boot-starter-hateoas")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 
     // security
     compile "org.springframework.boot:spring-boot-starter-security"
@@ -89,7 +94,7 @@ dependencies {
     }
     // to mock concrete class
     testCompile group: 'net.bytebuddy', name: 'byte-buddy', version: '1.7.9'
-    testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.12'
+    testCompile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.12'
     testCompile group: 'com.github.hippoom', name: 'test-data-builder', version: '0.4.0'
 
     // distributed trace

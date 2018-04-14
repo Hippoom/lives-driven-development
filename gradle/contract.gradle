@@ -1,0 +1,16 @@
+apply plugin: 'spring-cloud-contract'
+
+contracts {
+    targetFramework = 'Spock'
+    testMode = 'MockMvc'
+    basePackageForTests = 'com.github.hippoom.ldd.web'
+    packageWithBaseClasses = "com.github.hippoom.ldd.web.base"
+}
+
+sourceSets {
+    test {
+        groovy {
+            srcDir 'build/generated-test-sources/contracts'
+        }
+    }
+}
