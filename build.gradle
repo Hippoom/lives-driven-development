@@ -4,11 +4,13 @@ buildscript {
         hibernateVersion = '5.0.12.Final'
         spockVersion = '1.1-groovy-2.4'
         springCloudContractVersion = "1.2.3.RELEASE"
+        testDataBuilderVersion = '0.4.1'
     }
 
     dependencies {
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.20"
         classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudContractVersion}"
+        classpath group: 'com.github.hippoom', name: 'test-data-builder', version: testDataBuilderVersion
     }
 }
 
@@ -73,13 +75,13 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-security"
     testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.3.RELEASE'
 //    compile group: 'org.springframework.session', name: 'spring-session', version: '1.3.1.RELEASE'
-//    compile('org.springframework.session:spring-session-data-redis')
 
     // jdbc
-//    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    compile "org.flywaydb:flyway-core:${flywayVersion}"
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile "com.querydsl:querydsl-jpa:4.0.9"
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
     testCompile 'com.h2database:h2:1.4.192'
+//    compile "org.flywaydb:flyway-core:${flywayVersion}"
 //    testCompile("org.flywaydb.flyway-test-extensions:flyway-spring-test:${flywayVersion}") {
 //        exclude group: 'org.slf4j' //avoid multiple slf4j impl
 //    }
@@ -95,7 +97,7 @@ dependencies {
     // to mock concrete class
     testCompile group: 'net.bytebuddy', name: 'byte-buddy', version: '1.7.9'
     testCompile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.12'
-    testCompile group: 'com.github.hippoom', name: 'test-data-builder', version: '0.4.0'
+    testCompile group: 'com.github.hippoom', name: 'test-data-builder', version: testDataBuilderVersion
 
     // distributed trace
     compile('org.springframework.cloud:spring-cloud-starter-sleuth')

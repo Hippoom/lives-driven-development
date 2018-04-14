@@ -1,6 +1,5 @@
 package com.github.hippoom.ldd.web.rest;
 
-import com.github.hippoom.ldd.model.User;
 import com.github.hippoom.ldd.web.rest.assembler.CurrentLoggedInUserResourceAssembler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

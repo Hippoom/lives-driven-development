@@ -1,6 +1,5 @@
 package com.github.hippoom.ldd.web.rest.assembler;
 
-import com.github.hippoom.ldd.model.User;
 import com.github.hippoom.ldd.web.rest.TeamMemberController;
 import org.springframework.hateoas.Resource;
 import org.springframework.security.core.Authentication;
