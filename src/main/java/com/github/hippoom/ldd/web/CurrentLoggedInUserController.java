@@ -18,7 +18,10 @@ public class CurrentLoggedInUserController {
 
     @GetMapping(path = "/api/currentLoggedInUser")
     public Resource<User> me() {
-        Resource<User> resource = new Resource<>(new User());
+        User me = new User();
+        me.setDisplayName("Tyrande Whisperwind");
+        me.setAvatar("https://vignette.wikia.nocookie.net/wowwiki/images/3/39/Tyrande-Whisperwind3.jpg/revision/latest?cb=20080901183433");
+        Resource<User> resource = new Resource<>(me);
         resource.add(linkTo(methodOn(TeamMemberController.class).root()).withRel("teamMembers"));
         return resource;
     }
