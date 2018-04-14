@@ -4,6 +4,6 @@ import com.github.hippoom.ldd.web.AbstractWebMvcTest
 import org.springframework.security.test.context.support.WithMockUser
 
 @WithMockUser
-abstract class LddMeBase extends AbstractWebMvcTest {
+abstract class MeAuthenticatedBase extends AbstractWebMvcTest {
 
 }

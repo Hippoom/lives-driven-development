@@ -1,4 +1,4 @@
-package com.github.hippoom.ldd.web;
+package com.github.hippoom.ldd.web.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Resource;

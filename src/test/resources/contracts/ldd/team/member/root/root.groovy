@@ -1,4 +1,4 @@
-package contracts.ldd.member.root
+package contracts.ldd.team.member.root
 
 import org.springframework.cloud.contract.spec.Contract
 

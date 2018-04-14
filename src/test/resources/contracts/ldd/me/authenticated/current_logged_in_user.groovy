@@ -1,4 +1,4 @@
-package contracts.ldd.me
+package contracts.ldd.me.authenticated
 
 import org.springframework.cloud.contract.spec.Contract
 
