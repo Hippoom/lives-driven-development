@@ -15,7 +15,8 @@ Contract.make {
         body([
                 _links: [
                         search: [
-                                href: $(producer("http://localhost/api/teamMembers/search"))
+                                href     : $(producer("http://localhost/api/teamMembers/search{?page,size}")),
+                                templated: true
                         ]
                 ]
         ])

@@ -5,7 +5,8 @@ import com.github.hippoom.ldd.model.TeamMemberRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.github.hippoom.ldd.web.rest.assembler.Links.pagedTemplateVariables;
+import static com.github.hippoom.ldd.web.rest.assembler.Links.templateLink;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -31,13 +34,15 @@ public class TeamMemberController {
     @GetMapping
     public Resource<String> root() {
         Resource<String> resource = new Resource<>("");
-        resource.add(linkTo(methodOn(TeamMemberController.class).search()).withRel("search"));
+        resource.add(templateLink("search",
+                linkTo(methodOn(TeamMemberController.class).search(null)),
+                pagedTemplateVariables()));
         return resource;
     }
 
     @GetMapping(path = "/search")
-    public PagedResources<Resource<TeamMember>> search() {
-        Page<TeamMember> page = teamMemberRepository.findBy(new PageRequest(0, 3));
-        return pagedResourcesAssembler.toResource(page);
+    public PagedResources<Resource<TeamMember>> search(@PageableDefault(size = 15) Pageable pageable) {
+        Page<TeamMember> paged = teamMemberRepository.findBy(pageable);
+        return pagedResourcesAssembler.toResource(paged);
     }
 }

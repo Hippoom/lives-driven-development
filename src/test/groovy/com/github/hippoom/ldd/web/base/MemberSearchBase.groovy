@@ -12,16 +12,26 @@ import static com.github.hippoom.tdb.GenericTestDataListBuilder.listOfSize
 abstract class MemberSearchBase extends AbstractWebMvcTest {
 
     def setup() {
-        def pageable = new PageRequest(0, 3)
-        def firstPage = new PageImpl(
+        def firstPage = new PageRequest(0, 3)
+        def firstPageElements = new PageImpl(
                 listOfSize(3, { aTeamMember() })
                         .number(1, { it.withDisplayName("Tyrande Whisperwind") })
                         .number(2, { it.withDisplayName("Malfurion Stormrage") })
                         .number(3, { it.withDisplayName("Illidan Stormrage") })
                         .build(),
-                pageable,
+                firstPage,
                 4
         )
-        teamMemberRepository.findBy(pageable) >> firstPage
+        teamMemberRepository.findBy(firstPage) >> firstPageElements
+
+        def lastPage = new PageRequest(1, 3)
+        def lastPageElements = new PageImpl(
+                listOfSize(1, { aTeamMember() })
+                        .number(1, { it.withDisplayName("Jaina Proudmoore") })
+                        .build(),
+                lastPage,
+                4
+        )
+        teamMemberRepository.findBy(lastPage) >> lastPageElements
     }
 }
