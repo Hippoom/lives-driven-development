@@ -1,5 +1,7 @@
 package com.github.hippoom.ldd.web
 
+import cn.binarywang.wx.miniapp.api.WxMaService
+import cn.binarywang.wx.miniapp.api.WxMaUserService
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -9,7 +11,7 @@ import spock.lang.Specification
 
 @Import([
         MockMvcBuilderCustomizers,
-        TestConfiguration
+        WebMvcTestConfiguration
 ])
 @WebMvcTest
 abstract class AbstractWebMvcTest extends Specification {
@@ -17,8 +19,14 @@ abstract class AbstractWebMvcTest extends Specification {
     @Autowired
     protected MockMvc mockMvc
 
+    @Autowired
+    protected WxMaService wxMaService
+
+    protected WxMaUserService wxMaUserService = Mock()
+
     def setup() {
         RestAssuredMockMvc.mockMvc(mockMvc)
+        wxMaService.getUserService() >> wxMaUserService
     }
 
 }

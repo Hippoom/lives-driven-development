@@ -13,9 +13,9 @@ Contract.make {
     response {
         status 200
         body([
-                displayName: $(producer("Tyrande Whisperwind")),
-                avatar: $(producer("https://vignette.wikia.nocookie.net/wowwiki/images/3/39/Tyrande-Whisperwind3.jpg/revision/latest?cb=20080901183433")),
-                _links     : [
+                openId    : $(producer("Tyrande Whisperwind")),
+                sessionKey: $(producer("sessionKey")),
+                _links    : [
                         teamMembers: [
                                 href: $(producer("http://localhost/api/teamMembers"))
                         ]

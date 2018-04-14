@@ -1,5 +1,6 @@
 package com.github.hippoom.ldd.web.security;
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.hippoom.ldd.web.rest.assembler.CurrentLoggedInUserResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("_halObjectMapper")
     private ObjectMapper halObjectMapper;
+
+    @Autowired
+    private WxMaService wxMaService;
 
     @Autowired
     private CurrentLoggedInUserResourceAssembler currentLoggedInUserResourceAssembler;
@@ -43,7 +47,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private Filter weChatMiniAppLoginFilter() {
-        WeChatMiniAppLoginFilter filter = new WeChatMiniAppLoginFilter("/loginViaWeChatMiniApp");
+        WeChatMiniAppLoginFilter filter = new WeChatMiniAppLoginFilter();
+        filter.setWxMaService(wxMaService);
         filter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler());
         return filter;
     }

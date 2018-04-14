@@ -100,6 +100,9 @@ dependencies {
     // distributed trace
     compile('org.springframework.cloud:spring-cloud-starter-sleuth')
 
+    // WeChat mini app
+    compile group: 'com.github.binarywang', name: 'weixin-java-miniapp', version: '3.0.0'
+
 }
 
 test {

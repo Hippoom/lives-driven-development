@@ -22,7 +22,7 @@ public class CurrentLoggedInUserController {
     private final CurrentLoggedInUserResourceAssembler currentLoggedInUserResourceAssembler;
 
     @GetMapping(path = "/api/currentLoggedInUser")
-    public Resource<User> me(Authentication authentication) {
+    public Resource<Authentication> me(Authentication authentication) {
         return currentLoggedInUserResourceAssembler.toResource(authentication);
     }
 

@@ -1,9 +1,9 @@
 package com.github.hippoom.ldd.web.base
 
 import com.github.hippoom.ldd.web.AbstractWebMvcTest
-import org.springframework.security.test.context.support.WithMockUser
+import com.github.hippoom.ldd.web.security.WithTyrandeWhisperwind
 
-@WithMockUser
+@WithTyrandeWhisperwind
 abstract class MeAuthenticatedBase extends AbstractWebMvcTest {
 
 }
