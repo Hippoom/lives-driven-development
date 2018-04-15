@@ -1,4 +1,4 @@
-package contracts.ldd.team.member.consume.life
+package contracts.ldd.team.member.restore.lives
 
 import org.springframework.cloud.contract.spec.Contract
 

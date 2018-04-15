@@ -24,6 +24,8 @@ public class TeamMemberCommandHandler {
     }
 
     public TeamMember handle(RestoreMyLivesCommand command) {
-        return null;
+        TeamMember me = teamMemberRepository.mustFindBy(command.getOpenId());
+        me.restoreLives();
+        return me;
     }
 }

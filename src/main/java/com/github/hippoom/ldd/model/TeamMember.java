@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Relation(collectionRelation = "teamMembers")
 @Data
 public class TeamMember {
+    public static final int DEFAULT_LIVES = 3;
     @Id
     @JsonIgnore
     private String openId;
@@ -25,10 +26,18 @@ public class TeamMember {
     private int remainingLives;
 
     public void consumeLife() {
-        this.remainingLives--;
+        if (hasRemainingLives()) {
+            this.remainingLives--;
+        } else {
+            throw new NotEnoughLivesException(this);
+        }
     }
 
     public boolean hasRemainingLives() {
         return remainingLives > 0;
+    }
+
+    public void restoreLives() {
+        this.remainingLives = DEFAULT_LIVES;
     }
 }
