@@ -23,4 +23,8 @@ public class TeamMember {
 
     @Column
     private int remainingLives;
+
+    public void consumeLife() {
+        this.remainingLives--;
+    }
 }
