@@ -20,6 +20,10 @@ class TeamMemberFixture {
         this
     }
 
+    def but() {
+        this
+    }
+
     TeamMember build() {
         target
     }
@@ -28,6 +32,13 @@ class TeamMemberFixture {
         new TeamMemberFixture()
                 .withOpenId(randomString())
                 .withDisplayName(randomString())
+                .withRemainingLives(3)
+    }
+
+    static TeamMemberFixture tyrande() {
+        new TeamMemberFixture()
+                .withOpenId("Tyrande Whisperwind")
+                .withDisplayName("Tyrande Whisperwind")
                 .withRemainingLives(3)
     }
 }

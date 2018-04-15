@@ -1,6 +1,7 @@
 package com.github.hippoom.ldd.web
 
 import cn.binarywang.wx.miniapp.api.WxMaService
+import com.github.hippoom.ldd.commandhandling.TeamMemberCommandHandler
 import com.github.hippoom.ldd.model.TeamMemberRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -23,6 +24,11 @@ class WebMvcTestConfiguration {
     @Bean
     TeamMemberRepository teamMemberRepository() {
         factory.Mock(TeamMemberRepository)
+    }
+
+    @Bean
+    TeamMemberCommandHandler teamMemberCommandHandler() {
+        factory.Mock(TeamMemberCommandHandler)
     }
 
 }

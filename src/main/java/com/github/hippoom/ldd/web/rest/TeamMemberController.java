@@ -1,5 +1,7 @@
 package com.github.hippoom.ldd.web.rest;
 
+import com.github.hippoom.ldd.commandhandling.TeamMemberCommandHandler;
+import com.github.hippoom.ldd.commands.ConsumeMyLifeCommand;
 import com.github.hippoom.ldd.model.TeamMember;
 import com.github.hippoom.ldd.model.TeamMemberRepository;
 import com.github.hippoom.ldd.web.security.annotation.CurrentLoggedInUser;
@@ -12,8 +14,12 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 import static com.github.hippoom.ldd.web.rest.assembler.Links.pagedTemplateVariables;
 import static com.github.hippoom.ldd.web.rest.assembler.Links.templateLink;
@@ -28,6 +34,9 @@ public class TeamMemberController {
 
     @NonNull
     private final TeamMemberRepository teamMemberRepository;
+
+    @NonNull
+    private final TeamMemberCommandHandler teamMemberCommandHandler;
 
     @NonNull
     private final PagedResourcesAssembler<TeamMember> pagedResourcesAssembler;
@@ -48,8 +57,21 @@ public class TeamMemberController {
         return pagedResourcesAssembler.toResource(paged);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @GetMapping(path = "/me")
     public Resource<TeamMember> me(@CurrentLoggedInUser TeamMember me) {
-        return new Resource<>(me);
+        return toResource(me);
+    }
+
+    private Resource<TeamMember> toResource(@CurrentLoggedInUser TeamMember me) {
+        Resource<TeamMember> resource = new Resource<>(me);
+        resource.add(linkTo(methodOn(TeamMemberController.class).handle(new ConsumeMyLifeCommand()))
+            .withRel("consumeMyLife"));
+        return resource;
+    }
+
+    @PostMapping(path = "/consumeMyLife")
+    public Resource<TeamMember> handle(@Valid @CurrentLoggedInUser @RequestBody ConsumeMyLifeCommand command) {
+        return toResource(teamMemberCommandHandler.handle(command));
     }
 }

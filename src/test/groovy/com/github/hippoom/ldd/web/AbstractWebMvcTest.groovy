@@ -2,6 +2,7 @@ package com.github.hippoom.ldd.web
 
 import cn.binarywang.wx.miniapp.api.WxMaService
 import cn.binarywang.wx.miniapp.api.WxMaUserService
+import com.github.hippoom.ldd.commandhandling.TeamMemberCommandHandler
 import com.github.hippoom.ldd.model.TeamMemberRepository
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,6 +28,9 @@ abstract class AbstractWebMvcTest extends Specification {
 
     @Autowired
     protected TeamMemberRepository teamMemberRepository
+
+    @Autowired
+    protected TeamMemberCommandHandler teamMemberCommandHandler
 
     def setup() {
         RestAssuredMockMvc.mockMvc(mockMvc)
