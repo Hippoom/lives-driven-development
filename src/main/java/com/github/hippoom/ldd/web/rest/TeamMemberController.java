@@ -2,15 +2,18 @@ package com.github.hippoom.ldd.web.rest;
 
 import com.github.hippoom.ldd.commandhandling.TeamMemberCommandHandler;
 import com.github.hippoom.ldd.commands.ConsumeMyLifeCommand;
+import com.github.hippoom.ldd.commands.RestoreMyLivesCommand;
 import com.github.hippoom.ldd.model.TeamMember;
 import com.github.hippoom.ldd.model.TeamMemberRepository;
 import com.github.hippoom.ldd.web.security.annotation.CurrentLoggedInUser;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +44,7 @@ public class TeamMemberController {
     @NonNull
     private final PagedResourcesAssembler<TeamMember> pagedResourcesAssembler;
 
+    @SuppressFBWarnings(value = "NP", justification = "it is intended for assembling template link")
     @GetMapping
     public Resource<String> root() {
         Resource<String> resource = new Resource<>("");
@@ -65,13 +69,27 @@ public class TeamMemberController {
 
     private Resource<TeamMember> toResource(@CurrentLoggedInUser TeamMember me) {
         Resource<TeamMember> resource = new Resource<>(me);
-        resource.add(linkTo(methodOn(TeamMemberController.class).handle(new ConsumeMyLifeCommand()))
-            .withRel("consumeMyLife"));
+        resource.add(me.hasRemainingLives() ? linkToConsumeMyLife() : linkToRestoreMyLives());
         return resource;
+    }
+
+    private Link linkToConsumeMyLife() {
+        return linkTo(methodOn(TeamMemberController.class).handle(new ConsumeMyLifeCommand()))
+            .withRel("consumeMyLife");
+    }
+
+    private Link linkToRestoreMyLives() {
+        return linkTo(methodOn(TeamMemberController.class).handle(new RestoreMyLivesCommand()))
+            .withRel("restoreMyLives");
     }
 
     @PostMapping(path = "/consumeMyLife")
     public Resource<TeamMember> handle(@Valid @CurrentLoggedInUser @RequestBody ConsumeMyLifeCommand command) {
+        return toResource(teamMemberCommandHandler.handle(command));
+    }
+
+    @PostMapping(path = "/restoreMyLives")
+    public Resource<TeamMember> handle(@Valid @CurrentLoggedInUser @RequestBody RestoreMyLivesCommand command) {
         return toResource(teamMemberCommandHandler.handle(command));
     }
 }

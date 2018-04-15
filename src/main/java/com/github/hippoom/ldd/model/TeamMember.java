@@ -27,4 +27,8 @@ public class TeamMember {
     public void consumeLife() {
         this.remainingLives--;
     }
+
+    public boolean hasRemainingLives() {
+        return remainingLives > 0;
+    }
 }

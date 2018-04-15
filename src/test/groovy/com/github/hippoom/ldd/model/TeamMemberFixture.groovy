@@ -41,4 +41,11 @@ class TeamMemberFixture {
                 .withDisplayName("Tyrande Whisperwind")
                 .withRemainingLives(3)
     }
+
+    static TeamMemberFixture illidan() {
+        new TeamMemberFixture()
+                .withOpenId("Illidan Stormrage")
+                .withDisplayName("Illidan Stormrage")
+                .withRemainingLives(0)
+    }
 }

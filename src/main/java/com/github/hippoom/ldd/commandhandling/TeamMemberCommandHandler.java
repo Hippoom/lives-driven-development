@@ -1,6 +1,7 @@
 package com.github.hippoom.ldd.commandhandling;
 
 import com.github.hippoom.ldd.commands.ConsumeMyLifeCommand;
+import com.github.hippoom.ldd.commands.RestoreMyLivesCommand;
 import com.github.hippoom.ldd.model.TeamMember;
 import com.github.hippoom.ldd.model.TeamMemberRepository;
 import lombok.NonNull;
@@ -20,5 +21,9 @@ public class TeamMemberCommandHandler {
         TeamMember me = teamMemberRepository.mustFindBy(command.getOpenId());
         me.consumeLife();
         return me;
+    }
+
+    public TeamMember handle(RestoreMyLivesCommand command) {
+        return null;
     }
 }
