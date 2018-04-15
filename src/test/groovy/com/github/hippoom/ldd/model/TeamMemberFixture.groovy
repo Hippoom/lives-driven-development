@@ -15,11 +15,19 @@ class TeamMemberFixture {
         this
     }
 
+    def withRemainingLives(int value) {
+        target.remainingLives = value
+        this
+    }
+
     TeamMember build() {
         target
     }
 
     static TeamMemberFixture aTeamMember() {
-        new TeamMemberFixture().withOpenId(randomString()).withDisplayName(randomString())
+        new TeamMemberFixture()
+                .withOpenId(randomString())
+                .withDisplayName(randomString())
+                .withRemainingLives(3)
     }
 }
