@@ -17,6 +17,9 @@ Contract.make {
                         search: [
                                 href     : $(producer("http://localhost/api/teamMembers/search{?page,size}")),
                                 templated: true
+                        ],
+                        me    : [
+                                href: $(producer("http://localhost/api/teamMembers/me"))
                         ]
                 ]
         ])

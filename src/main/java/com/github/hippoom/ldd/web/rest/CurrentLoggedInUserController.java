@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ public class CurrentLoggedInUserController {
     private final CurrentLoggedInUserResourceAssembler currentLoggedInUserResourceAssembler;
 
     @GetMapping(path = "/api/currentLoggedInUser")
-    public Resource<Authentication> me(Authentication authentication) {
+    public Resource<String> me(Authentication authentication) {
         return currentLoggedInUserResourceAssembler.toResource(authentication);
     }
 

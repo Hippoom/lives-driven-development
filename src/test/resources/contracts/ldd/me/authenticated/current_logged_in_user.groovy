@@ -13,9 +13,7 @@ Contract.make {
     response {
         status 200
         body([
-                openId    : $(producer("Tyrande Whisperwind")),
-                sessionKey: $(producer("sessionKey")),
-                _links    : [
+                _links: [
                         teamMembers: [
                                 href: $(producer("http://localhost/api/teamMembers"))
                         ]

@@ -2,6 +2,7 @@ package com.github.hippoom.ldd.web.rest;
 
 import com.github.hippoom.ldd.model.TeamMember;
 import com.github.hippoom.ldd.model.TeamMemberRepository;
+import com.github.hippoom.ldd.web.security.annotation.CurrentLoggedInUser;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,8 +36,9 @@ public class TeamMemberController {
     public Resource<String> root() {
         Resource<String> resource = new Resource<>("");
         resource.add(templateLink("search",
-                linkTo(methodOn(TeamMemberController.class).search(null)),
-                pagedTemplateVariables()));
+            linkTo(methodOn(TeamMemberController.class).search(null)),
+            pagedTemplateVariables()));
+        resource.add(linkTo(methodOn(TeamMemberController.class).me(null)).withRel("me"));
         return resource;
     }
 
@@ -44,5 +46,10 @@ public class TeamMemberController {
     public PagedResources<Resource<TeamMember>> search(@PageableDefault(size = 15) Pageable pageable) {
         Page<TeamMember> paged = teamMemberRepository.findBy(pageable);
         return pagedResourcesAssembler.toResource(paged);
+    }
+
+    @GetMapping(path = "/me")
+    public Resource<TeamMember> me(@CurrentLoggedInUser TeamMember me) {
+        return new Resource<>(me);
     }
 }

@@ -11,8 +11,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @Component
 public class CurrentLoggedInUserResourceAssembler {
 
-    public Resource<Authentication> toResource(Authentication authentication) {
-        Resource<Authentication> resource = new Resource<>(authentication);
+    public Resource<String> toResource(Authentication authentication) {
+        Resource<String> resource = new Resource<>("");
         resource.add(linkTo(methodOn(TeamMemberController.class).root()).withRel("teamMembers"));
         return resource;
     }
