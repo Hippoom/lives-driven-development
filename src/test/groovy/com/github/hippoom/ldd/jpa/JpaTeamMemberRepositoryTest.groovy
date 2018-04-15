@@ -36,4 +36,16 @@ class JpaTeamMemberRepositoryTest extends AbstractJpaTest {
             subject.findBy(nextPage)
         })
     }
+
+    def "it should find by openId"() {
+        given:
+        def expect = aTeamMember().build()
+        subject.save(expect)
+
+        when:
+        def actual = subject.mustFindBy(expect.getOpenId())
+
+        then:
+        assert actual != null
+    }
 }

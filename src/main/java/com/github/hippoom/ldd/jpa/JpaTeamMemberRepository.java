@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.util.Optional;
-
 import static com.github.hippoom.ldd.model.QTeamMember.teamMember;
 
 @RequiredArgsConstructor
@@ -51,6 +49,6 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
 
     @Override
     public TeamMember mustFindBy(String openId) {
-        return null;
+        return entityManager.find(TeamMember.class, openId);
     }
 }
