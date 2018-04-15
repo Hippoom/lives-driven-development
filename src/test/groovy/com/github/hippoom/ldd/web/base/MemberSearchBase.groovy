@@ -15,9 +15,21 @@ abstract class MemberSearchBase extends AbstractWebMvcTest {
         def firstPage = new PageRequest(0, 3)
         def firstPageElements = new PageImpl(
                 listOfSize(3, { aTeamMember() })
-                        .number(1, { it.withDisplayName("Tyrande Whisperwind") })
-                        .number(2, { it.withDisplayName("Malfurion Stormrage") })
-                        .number(3, { it.withDisplayName("Illidan Stormrage") })
+                        .number(1,
+                        {
+                            it.withDisplayName("Tyrande Whisperwind")
+                            it.withRemainingLives(3)
+                        })
+                        .number(2,
+                        {
+                            it.withDisplayName("Malfurion Stormrage")
+                            it.withRemainingLives(2)
+                        })
+                        .number(3,
+                        {
+                            it.withDisplayName("Illidan Stormrage")
+                            it.withRemainingLives(0)
+                        })
                         .build(),
                 firstPage,
                 4

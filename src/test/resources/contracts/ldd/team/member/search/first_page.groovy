@@ -19,9 +19,21 @@ Contract.make {
                         _embedded: [
                                 teamMembers: $(producer(
                                         listOfSize(3, { [:] })
-                                                .number(1, { it.displayName = "Tyrande Whisperwind" })
-                                                .number(2, { it.displayName = "Malfurion Stormrage" })
-                                                .number(3, { it.displayName = "Illidan Stormrage" })
+                                                .number(1,
+                                                {
+                                                    it.displayName = "Tyrande Whisperwind"
+                                                    it.remainingLives = 3
+                                                })
+                                                .number(2,
+                                                {
+                                                    it.displayName = "Malfurion Stormrage"
+                                                    it.remainingLives = 2
+                                                })
+                                                .number(3,
+                                                {
+                                                    it.displayName = "Illidan Stormrage"
+                                                    it.remainingLives = 0
+                                                })
                                                 .build { it }
                                 ))
                         ],
