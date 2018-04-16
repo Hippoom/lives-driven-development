@@ -4,6 +4,7 @@ import com.github.hippoom.ldd.eventhandling.EventPublisher
 import com.github.hippoom.ldd.eventhandling.TeamMemberEvent
 import com.github.hippoom.ldd.eventhandling.TeamMemberEventQuery
 import com.github.hippoom.ldd.events.TeamMemberLifeConsumedEvent
+import com.github.hippoom.ldd.events.TeamMemberLivesRestoredEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -18,10 +19,33 @@ class JpaEventPublisherTest extends AbstractJpaTest {
     @Autowired
     private TeamMemberEventQuery teamMemberEventQuery
 
-    def "it should save event"() {
+    def "it should save TeamMemberLifeConsumedEvent"() {
         given:
         def me = aTeamMember().build()
-        def event = new TeamMemberLifeConsumedEvent(me.getOpenId(), me.version, "reason")
+        def event = new TeamMemberLifeConsumedEvent(me.getOpenId(), me.version, "why")
+
+        and:
+        def pageable = new PageRequest(0, 2)
+        def before = teamMemberEventQuery.findBy(me.getOpenId(), pageable)
+
+        when:
+        subject.publish(event)
+
+        then:
+        def after = teamMemberEventQuery.findBy(me.getOpenId(), pageable)
+
+        assert after.totalElements == before.totalElements + 1
+        assertSorting(after, { TeamMemberEvent current, TeamMemberEvent next ->
+            current.getSequence() >= next.getSequence()
+        }, { Pageable nextPage ->
+            subject.findBy(me.getOpenId(), nextPage)
+        })
+    }
+
+    def "it should save TeamMemberLivesRestoredEvent"() {
+        given:
+        def me = aTeamMember().build()
+        def event = new TeamMemberLivesRestoredEvent(me.getOpenId(), me.version, "how")
 
         and:
         def pageable = new PageRequest(0, 2)

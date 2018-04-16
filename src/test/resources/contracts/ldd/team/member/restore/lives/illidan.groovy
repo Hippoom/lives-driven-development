@@ -10,7 +10,9 @@ Contract.make {
             contentType('application/json;charset=UTF-8')
         }
         body(
-                "{}" // empty json
+                [
+                        how: "I bought mile tea for everyone"
+                ]
         )
     }
     response {

@@ -13,6 +13,6 @@ abstract class ConsumeLifeBase extends AbstractWebMvcTest {
         def tyrande = tyrande().but()
                 .withRemainingLives(2)
                 .build()
-        teamMemberCommandHandler.handle(aConsumeMyLifeCommand().with(tyrande).withReason("I missed the stand up meeting").build()) >> tyrande
+        teamMemberCommandHandler.handle(aConsumeMyLifeCommand().with(tyrande).withWhy("I missed the stand up meeting").build()) >> tyrande
     }
 }

@@ -1,12 +1,12 @@
 package com.github.hippoom.ldd.web.base
 
-import com.github.hippoom.ldd.commands.RestoreMyLivesCommand
 import com.github.hippoom.ldd.model.NotEnoughLivesException
 import com.github.hippoom.ldd.model.TeamMember
 import com.github.hippoom.ldd.web.AbstractWebMvcTest
 import com.github.hippoom.ldd.web.security.WithIllidanStormrage
 
 import static com.github.hippoom.ldd.commands.ConsumeMyLifeCommandFixture.aConsumeMyLifeCommand
+import static com.github.hippoom.ldd.commands.RestoreMyLivesCommandFixture.aRestoreMyLivesCommand
 import static com.github.hippoom.ldd.model.TeamMemberFixture.illidan
 
 @WithIllidanStormrage
@@ -23,8 +23,9 @@ abstract class RestoreLivesBase extends AbstractWebMvcTest {
     }
 
     static def restoreMyLivesCommandFor(TeamMember member) {
-        def command = new RestoreMyLivesCommand()
-        command.setOpenId(member.getOpenId())
-        command
+        aRestoreMyLivesCommand()
+                .with(member)
+                .withHow("I bought mile tea for everyone")
+                .build()
     }
 }

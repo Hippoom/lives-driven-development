@@ -1,14 +1,16 @@
 package com.github.hippoom.ldd.commandhandling
 
 import com.github.hippoom.ldd.commands.ConsumeMyLifeCommand
-import com.github.hippoom.ldd.commands.RestoreMyLivesCommand
+import com.github.hippoom.ldd.commands.RestoreMyLivesCommandFixture
 import com.github.hippoom.ldd.eventhandling.EventPublisher
 import com.github.hippoom.ldd.events.TeamMemberLifeConsumedEvent
+import com.github.hippoom.ldd.events.TeamMemberLivesRestoredEvent
 import com.github.hippoom.ldd.model.NotEnoughLivesException
 import com.github.hippoom.ldd.model.TeamMemberRepository
 import spock.lang.Specification
 
 import static com.github.hippoom.ldd.commands.ConsumeMyLifeCommandFixture.aConsumeMyLifeCommand
+import static com.github.hippoom.ldd.commands.RestoreMyLivesCommandFixture.aRestoreMyLivesCommand
 import static com.github.hippoom.ldd.model.TeamMemberFixture.illidan
 import static com.github.hippoom.ldd.model.TeamMemberFixture.tyrande
 
@@ -34,7 +36,7 @@ class TeamMemberCommandHandlerTest extends Specification {
         assert after.remainingLives == before - 1
 
         and:
-        1 * eventPublisher.publish(new TeamMemberLifeConsumedEvent(me.getOpenId(), me.getVersion(), command.getReason()))
+        1 * eventPublisher.publish(new TeamMemberLifeConsumedEvent(me.getOpenId(), me.getVersion(), command.getWhy()))
     }
 
     def "it should throw exception when handling ConsumeMyLifeCommand given not enough lives"() {
@@ -54,8 +56,7 @@ class TeamMemberCommandHandlerTest extends Specification {
     def "it should handle RestoreMyLivesCommand"() {
         given:
         def me = illidan().build()
-        def command = new RestoreMyLivesCommand()
-        command.setOpenId(me.getOpenId())
+        def command = aRestoreMyLivesCommand().with(me).build()
         teamMemberRepository.mustFindBy(command.openId) >> me
 
         when:
@@ -63,5 +64,6 @@ class TeamMemberCommandHandlerTest extends Specification {
 
         then: "3 lives is restored"
         assert after.remainingLives == 3
+        1 * eventPublisher.publish(new TeamMemberLivesRestoredEvent(me.getOpenId(), me.getVersion(), command.getHow()))
     }
 }

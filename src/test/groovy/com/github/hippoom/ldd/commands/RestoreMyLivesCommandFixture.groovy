@@ -4,17 +4,17 @@ import com.github.hippoom.ldd.model.TeamMember
 
 import static com.github.hippoom.ldd.model.TeamMemberFixture.tyrande
 
-class ConsumeMyLifeCommandFixture {
+class RestoreMyLivesCommandFixture {
 
-    private ConsumeMyLifeCommand target = new ConsumeMyLifeCommand()
+    private RestoreMyLivesCommand target = new RestoreMyLivesCommand()
 
     def with(TeamMember teamMember) {
         target.setOpenId(teamMember.getOpenId())
         this
     }
 
-    def withWhy(String value) {
-        target.setWhy(value)
+    def withHow(String value) {
+        target.setHow(value)
         this
     }
 
@@ -22,7 +22,7 @@ class ConsumeMyLifeCommandFixture {
         target
     }
 
-    def static aConsumeMyLifeCommand() {
-        new ConsumeMyLifeCommandFixture().with(tyrande().build()).withWhy("I missed the stand up meeting")
+    def static aRestoreMyLivesCommand() {
+        new RestoreMyLivesCommandFixture().with(tyrande().build()).withHow("I missed the stand up meeting")
     }
 }

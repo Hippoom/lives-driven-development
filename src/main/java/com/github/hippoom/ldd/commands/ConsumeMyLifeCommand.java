@@ -8,7 +8,7 @@ import lombok.Data;
 public class ConsumeMyLifeCommand implements CurrentLoggedInUserAware {
     @JsonIgnore
     private String openId;
-    private String reason;
+    private String why;
 
     @Override
     public void setCurrentLoggedInUser(String openId) {

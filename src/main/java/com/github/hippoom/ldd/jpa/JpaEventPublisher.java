@@ -3,7 +3,7 @@ package com.github.hippoom.ldd.jpa;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.hippoom.ldd.eventhandling.EventPublisher;
 import com.github.hippoom.ldd.eventhandling.TeamMemberEvent;
-import com.github.hippoom.ldd.events.TeamMemberLifeConsumedEvent;
+import com.github.hippoom.ldd.events.AbstractTeamMemberEvent;
 import com.github.hippoom.ldd.time.Clock;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +27,23 @@ public class JpaEventPublisher implements EventPublisher {
 
     @Override
     public void publish(Object event) {
-        TeamMemberLifeConsumedEvent lifeConsumedEvent = (TeamMemberLifeConsumedEvent) event;
+        AbstractTeamMemberEvent lifeConsumedEvent = (AbstractTeamMemberEvent) event;
         entityManager.persist(from(lifeConsumedEvent));
     }
 
     @SneakyThrows
-    private TeamMemberEvent from(TeamMemberLifeConsumedEvent event) {
-        Query query = entityManager.createNativeQuery("SELECT nextval('SEQ_TEAM_MEMBER_EVENT')");
+    private TeamMemberEvent from(AbstractTeamMemberEvent event) {
+        long sequence = nextSequence();
         return new TeamMemberEvent()
-                .setSequence(((Number) query.getSingleResult()).longValue())
+                .setSequence(sequence)
                 .setVersion(event.getVersion())
                 .setOpenId(event.getOpenId())
                 .setPayload(objectMapper.writeValueAsString(event))
                 .setWhen(clock.now());
+    }
+
+    private long nextSequence() {
+        Query query = entityManager.createNativeQuery("SELECT nextval('SEQ_TEAM_MEMBER_EVENT')");
+        return ((Number) query.getSingleResult()).longValue();
     }
 }

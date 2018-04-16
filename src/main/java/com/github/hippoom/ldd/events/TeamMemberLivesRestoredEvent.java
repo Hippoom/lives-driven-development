@@ -8,12 +8,12 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Getter
-public class TeamMemberLifeConsumedEvent extends AbstractTeamMemberEvent {
+public class TeamMemberLivesRestoredEvent extends AbstractTeamMemberEvent {
     @NonNull
-    private final String why;
+    private final String how;
 
-    public TeamMemberLifeConsumedEvent(String openId, int version, String reason) {
+    public TeamMemberLivesRestoredEvent(String openId, int version, String how) {
         super(openId, version);
-        this.why = reason;
+        this.how = how;
     }
 }

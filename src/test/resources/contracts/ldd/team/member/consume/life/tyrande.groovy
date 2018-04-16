@@ -11,7 +11,7 @@ Contract.make {
         }
         body(
                 [
-                        reason: $(producer("I missed the stand up meeting"))
+                        why: $(producer("I missed the stand up meeting"))
                 ]
         )
     }

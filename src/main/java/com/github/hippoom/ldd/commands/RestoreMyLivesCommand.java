@@ -8,6 +8,7 @@ import lombok.Data;
 public class RestoreMyLivesCommand implements CurrentLoggedInUserAware {
     @JsonIgnore
     private String openId;
+    private String how;
 
     @Override
     public void setCurrentLoggedInUser(String openId) {
