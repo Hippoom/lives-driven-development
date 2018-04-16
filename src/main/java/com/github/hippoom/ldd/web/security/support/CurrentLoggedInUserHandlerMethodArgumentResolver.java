@@ -39,7 +39,7 @@ public class CurrentLoggedInUserHandlerMethodArgumentResolver
 
         if (authentication != null && authentication.isAuthenticated()) {
             WeChatMiniAppAuthentication weChatMiniAppAuthentication = (WeChatMiniAppAuthentication) authentication;
-            return teamMemberRepository.mustFindBy(weChatMiniAppAuthentication.getOpenId());
+            return teamMemberRepository.mustFindByOpenId(weChatMiniAppAuthentication.getOpenId());
         } else {
             //should never be here
             return null;

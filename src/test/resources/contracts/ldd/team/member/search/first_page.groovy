@@ -23,16 +23,31 @@ Contract.make {
                                                 {
                                                     it.displayName = "Tyrande Whisperwind"
                                                     it.remainingLives = 3
+                                                    it._links = [
+                                                            self: [
+                                                                  href: "http://localhost/api/teamMembers/1"
+                                                            ]
+                                                    ]
                                                 })
                                                 .number(2,
                                                 {
                                                     it.displayName = "Malfurion Stormrage"
                                                     it.remainingLives = 2
+                                                    it._links = [
+                                                            self: [
+                                                                    href: "http://localhost/api/teamMembers/2"
+                                                            ]
+                                                    ]
                                                 })
                                                 .number(3,
                                                 {
                                                     it.displayName = "Illidan Stormrage"
                                                     it.remainingLives = 0
+                                                    it._links = [
+                                                            self: [
+                                                                    href: "http://localhost/api/teamMembers/3"
+                                                            ]
+                                                    ]
                                                 })
                                                 .build { it }
                                 ))

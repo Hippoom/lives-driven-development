@@ -17,16 +17,19 @@ abstract class MemberSearchBase extends AbstractWebMvcTest {
                 listOfSize(3, { aTeamMember() })
                         .number(1,
                         {
+                            it.withId(1)
                             it.withDisplayName("Tyrande Whisperwind")
                             it.withRemainingLives(3)
                         })
                         .number(2,
                         {
+                            it.withId(2)
                             it.withDisplayName("Malfurion Stormrage")
                             it.withRemainingLives(2)
                         })
                         .number(3,
                         {
+                            it.withId(3)
                             it.withDisplayName("Illidan Stormrage")
                             it.withRemainingLives(0)
                         })

@@ -24,14 +24,14 @@ public class TeamMemberCommandHandler {
     private EventPublisher eventPublisher;
 
     public TeamMember handle(ConsumeMyLifeCommand command) {
-        TeamMember me = teamMemberRepository.mustFindBy(command.getOpenId());
+        TeamMember me = teamMemberRepository.mustFindByOpenId(command.getOpenId());
         me.consumeLife();
         eventPublisher.publish(new TeamMemberLifeConsumedEvent(command.getOpenId(), me.getVersion(), command.getWhy()));
         return me;
     }
 
     public TeamMember handle(RestoreMyLivesCommand command) {
-        TeamMember me = teamMemberRepository.mustFindBy(command.getOpenId());
+        TeamMember me = teamMemberRepository.mustFindByOpenId(command.getOpenId());
         me.restoreLives();
         eventPublisher.publish(new TeamMemberLivesRestoredEvent(command.getOpenId(), me.getVersion(), command.getHow()));
         return me;

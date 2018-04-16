@@ -1,7 +1,6 @@
 package com.github.hippoom.ldd.commandhandling
 
 import com.github.hippoom.ldd.commands.ConsumeMyLifeCommand
-import com.github.hippoom.ldd.commands.RestoreMyLivesCommandFixture
 import com.github.hippoom.ldd.eventhandling.EventPublisher
 import com.github.hippoom.ldd.events.TeamMemberLifeConsumedEvent
 import com.github.hippoom.ldd.events.TeamMemberLivesRestoredEvent
@@ -24,7 +23,7 @@ class TeamMemberCommandHandlerTest extends Specification {
         given:
         def me = tyrande().build()
         def command = aConsumeMyLifeCommand().with(me).build()
-        teamMemberRepository.mustFindBy(command.openId) >> me
+        teamMemberRepository.mustFindByOpenId(command.openId) >> me
 
         and:
         def before = me.remainingLives
@@ -44,7 +43,7 @@ class TeamMemberCommandHandlerTest extends Specification {
         def me = illidan().build()
         def command = new ConsumeMyLifeCommand()
         command.setOpenId(me.getOpenId())
-        teamMemberRepository.mustFindBy(command.openId) >> me
+        teamMemberRepository.mustFindByOpenId(command.openId) >> me
 
         when:
         subject.handle(command)
@@ -57,7 +56,7 @@ class TeamMemberCommandHandlerTest extends Specification {
         given:
         def me = illidan().build()
         def command = aRestoreMyLivesCommand().with(me).build()
-        teamMemberRepository.mustFindBy(command.openId) >> me
+        teamMemberRepository.mustFindByOpenId(command.openId) >> me
 
         when:
         def after = subject.handle(command)

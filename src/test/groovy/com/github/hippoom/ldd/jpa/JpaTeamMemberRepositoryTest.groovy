@@ -13,6 +13,7 @@ class JpaTeamMemberRepositoryTest extends AbstractJpaTest {
     @Autowired
     private TeamMemberRepository subject
 
+    @SuppressWarnings("ChangeToOperator")
     def "it should return paged elements"() {
         given:
         def pageable = new PageRequest(0, 2)
@@ -20,9 +21,9 @@ class JpaTeamMemberRepositoryTest extends AbstractJpaTest {
 
         and:
         subject.save(
-                aTeamMember().build(),
-                aTeamMember().build(),
-                aTeamMember().build()
+                aTeamMember().withId(subject.next()).build(),
+                aTeamMember().withId(subject.next()).build(),
+                aTeamMember().withId(subject.next()).build()
         )
 
         when:
@@ -39,11 +40,11 @@ class JpaTeamMemberRepositoryTest extends AbstractJpaTest {
 
     def "it should find by openId"() {
         given:
-        def expect = aTeamMember().build()
+        def expect = aTeamMember().withId(subject.next()).build()
         subject.save(expect)
 
         when:
-        def actual = subject.mustFindBy(expect.getOpenId())
+        def actual = subject.mustFindByOpenId(expect.getOpenId())
 
         then:
         assert actual != null

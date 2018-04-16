@@ -10,6 +10,6 @@ abstract class MeIllidanBase extends AbstractWebMvcTest {
 
     def setup() {
         def illidan = illidan().build()
-        teamMemberRepository.mustFindBy(illidan.getOpenId()) >> illidan
+        teamMemberRepository.mustFindByOpenId(illidan.getOpenId()) >> illidan
     }
 }

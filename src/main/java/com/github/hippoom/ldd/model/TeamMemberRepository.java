@@ -8,7 +8,9 @@ import java.util.Optional;
 public interface TeamMemberRepository {
     Page<TeamMember> findBy(Pageable pageable);
 
+    long next();
+
     void save(TeamMember... models);
 
-    TeamMember mustFindBy(String openId);
+    TeamMember mustFindByOpenId(String openId);
 }

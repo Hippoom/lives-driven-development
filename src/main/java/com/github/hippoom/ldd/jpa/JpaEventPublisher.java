@@ -24,6 +24,8 @@ public class JpaEventPublisher implements EventPublisher {
     private ObjectMapper objectMapper;
     @NonNull
     private Clock clock;
+    @NonNull
+    private SequenceGenerator sequenceGenerator;
 
     @Override
     public void publish(Object event) {
@@ -43,7 +45,6 @@ public class JpaEventPublisher implements EventPublisher {
     }
 
     private long nextSequence() {
-        Query query = entityManager.createNativeQuery("SELECT nextval('SEQ_TEAM_MEMBER_EVENT')");
-        return ((Number) query.getSingleResult()).longValue();
+        return sequenceGenerator.nextSequence("SEQ_TEAM_MEMBER_EVENT");
     }
 }

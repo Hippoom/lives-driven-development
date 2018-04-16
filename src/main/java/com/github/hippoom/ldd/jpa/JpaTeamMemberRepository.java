@@ -21,18 +21,25 @@ import static com.github.hippoom.ldd.model.QTeamMember.teamMember;
 public class JpaTeamMemberRepository implements TeamMemberRepository {
     @NonNull
     private final EntityManager entityManager;
+    @NonNull
+    private final SequenceGenerator sequenceGenerator;
 
     @Override
     public Page<TeamMember> findBy(Pageable pageable) {
         JPAQuery<TeamMember> query = query().from(teamMember);
         return new PageImpl<>(
-            query
-                .limit(pageable.getPageSize()).offset(pageable.getOffset())
-                .orderBy(teamMember.displayName.asc())
-                .fetch(),
-            pageable,
-            query.fetchCount()
+                query
+                        .limit(pageable.getPageSize()).offset(pageable.getOffset())
+                        .orderBy(teamMember.displayName.asc())
+                        .fetch(),
+                pageable,
+                query.fetchCount()
         );
+    }
+
+    @Override
+    public long next() {
+        return sequenceGenerator.nextSequence("SEQ_TEAM_MEMBER");
     }
 
     private JPAQuery<TeamMember> query() {
@@ -48,7 +55,9 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
     }
 
     @Override
-    public TeamMember mustFindBy(String openId) {
-        return entityManager.find(TeamMember.class, openId);
+    public TeamMember mustFindByOpenId(String openId) {
+        return query().from(teamMember)
+                .where(teamMember.openId.eq(openId))
+                .fetchOne();
     }
 }

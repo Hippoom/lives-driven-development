@@ -10,6 +10,6 @@ abstract class MeTyrandeBase extends AbstractWebMvcTest {
 
     def setup() {
         def tyrande = tyrande().build()
-        teamMemberRepository.mustFindBy(tyrande.getOpenId()) >> tyrande
+        teamMemberRepository.mustFindByOpenId(tyrande.getOpenId()) >> tyrande
     }
 }
