@@ -38,6 +38,7 @@ class JpaTeamMemberRepositoryTest extends AbstractJpaTest {
         })
     }
 
+    @SuppressWarnings("ChangeToOperator")
     def "it should find by openId"() {
         given:
         def expect = aTeamMember().withId(subject.next()).build()
@@ -45,6 +46,19 @@ class JpaTeamMemberRepositoryTest extends AbstractJpaTest {
 
         when:
         def actual = subject.mustFindByOpenId(expect.getOpenId())
+
+        then:
+        assert actual != null
+    }
+
+    @SuppressWarnings("ChangeToOperator")
+    def "it should find by id"() {
+        given:
+        def expect = aTeamMember().withId(subject.next()).build()
+        subject.save(expect)
+
+        when:
+        def actual = subject.mustFindBy(expect.getId())
 
         then:
         assert actual != null

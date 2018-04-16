@@ -60,4 +60,9 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
                 .where(teamMember.openId.eq(openId))
                 .fetchOne();
     }
+
+    @Override
+    public TeamMember mustFindBy(Long id) {
+        return entityManager.find(TeamMember.class, id);
+    }
 }

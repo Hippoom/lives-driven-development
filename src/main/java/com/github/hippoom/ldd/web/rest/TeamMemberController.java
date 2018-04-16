@@ -73,7 +73,7 @@ public class TeamMemberController {
     @SuppressWarnings("ConstantConditions")
     @GetMapping(path = "/{id}")
     public Resource<TeamMember> findBy(@PathVariable Long id) {
-        return null;
+        return toResource(teamMemberRepository.mustFindBy(id));
     }
 
     private Resource<TeamMember> toResource(@CurrentLoggedInUser TeamMember me) {

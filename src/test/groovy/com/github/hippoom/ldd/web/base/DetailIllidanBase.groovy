@@ -1,0 +1,16 @@
+package com.github.hippoom.ldd.web.base
+
+import com.github.hippoom.ldd.web.AbstractWebMvcTest
+import com.github.hippoom.ldd.web.security.WithIllidanStormrage
+
+import static com.github.hippoom.ldd.model.TeamMemberFixture.illidan
+
+@WithIllidanStormrage
+class DetailIllidanBase extends AbstractWebMvcTest {
+
+    def setup() {
+        def illidan = illidan().build()
+        teamMemberRepository.mustFindBy(illidan.getId()) >> illidan
+    }
+
+}

@@ -13,4 +13,6 @@ public interface TeamMemberRepository {
     void save(TeamMember... models);
 
     TeamMember mustFindByOpenId(String openId);
+
+    TeamMember mustFindBy(Long id);
 }
