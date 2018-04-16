@@ -2,6 +2,8 @@ package com.github.hippoom.ldd.commandhandling;
 
 import com.github.hippoom.ldd.commands.ConsumeMyLifeCommand;
 import com.github.hippoom.ldd.commands.RestoreMyLivesCommand;
+import com.github.hippoom.ldd.eventhandling.EventPublisher;
+import com.github.hippoom.ldd.events.TeamMemberLifeConsumedEvent;
 import com.github.hippoom.ldd.model.TeamMember;
 import com.github.hippoom.ldd.model.TeamMemberRepository;
 import lombok.NonNull;
@@ -17,9 +19,13 @@ public class TeamMemberCommandHandler {
     @NonNull
     private TeamMemberRepository teamMemberRepository;
 
+    @NonNull
+    private EventPublisher eventPublisher;
+
     public TeamMember handle(ConsumeMyLifeCommand command) {
         TeamMember me = teamMemberRepository.mustFindBy(command.getOpenId());
         me.consumeLife();
+        eventPublisher.publish(new TeamMemberLifeConsumedEvent(command.getOpenId(), me.getVersion(), command.getReason()));
         return me;
     }
 

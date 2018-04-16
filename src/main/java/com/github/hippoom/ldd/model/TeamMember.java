@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table
@@ -18,6 +19,9 @@ public class TeamMember {
     @Id
     @JsonIgnore
     private String openId;
+
+    @Version
+    private int version;
 
     @Column
     private String displayName;

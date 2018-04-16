@@ -10,7 +10,9 @@ Contract.make {
             contentType('application/json;charset=UTF-8')
         }
         body(
-                "{}" // empty json
+                [
+                        reason: $(producer("I missed the stand up meeting"))
+                ]
         )
     }
     response {

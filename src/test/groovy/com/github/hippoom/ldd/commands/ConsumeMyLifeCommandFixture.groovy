@@ -13,11 +13,16 @@ class ConsumeMyLifeCommandFixture {
         this
     }
 
+    def withReason(String value) {
+        target.setReason(value)
+        this
+    }
+
     def build() {
         target
     }
 
     def static aConsumeMyLifeCommand() {
-        new ConsumeMyLifeCommandFixture().with(tyrande().build())
+        new ConsumeMyLifeCommandFixture().with(tyrande().build()).withReason("I missed the stand up meeting")
     }
 }

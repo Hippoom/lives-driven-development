@@ -1,5 +1,7 @@
 package com.github.hippoom.ldd.jpa
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.hippoom.ldd.time.Clock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -19,7 +21,9 @@ import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORT
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
 @Import([
-        JpaConfiguration
+        JpaConfiguration,
+        Clock,
+        ObjectMapper.class
 ])
 @Transactional(propagation = NOT_SUPPORTED)
 @ActiveProfiles("test")

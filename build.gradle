@@ -84,10 +84,10 @@ dependencies {
     compile "com.querydsl:querydsl-jpa:4.0.9"
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
     testCompile 'com.h2database:h2:1.4.192'
-//    compile "org.flywaydb:flyway-core:${flywayVersion}"
-//    testCompile("org.flywaydb.flyway-test-extensions:flyway-spring-test:${flywayVersion}") {
-//        exclude group: 'org.slf4j' //avoid multiple slf4j impl
-//    }
+    compile "org.flywaydb:flyway-core:${flywayVersion}"
+    testCompile("org.flywaydb.flyway-test-extensions:flyway-spring-test:${flywayVersion}") {
+        exclude group: 'org.slf4j' //avoid multiple slf4j impl
+    }
 
     // tests frameworks
     testCompile("org.springframework.boot:spring-boot-starter-test")
