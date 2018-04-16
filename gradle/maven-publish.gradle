@@ -1,0 +1,26 @@
+def git = 'https://github.com/Hippoom/lives-driven-development.git'
+
+apply plugin: 'maven-publish'
+
+publishing {
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+            credentials {
+                username "$System.env.NEXUS_CI_USER"
+                password "$System.env.NEXUS_CI_PASS"
+            }
+        }
+    }
+
+    publications {
+        stubs(MavenPublication) {
+            groupId rootProject.group
+            artifactId "${rootProject.name}-stubs"
+            version rootProject.version
+            artifact verifierStubsJar
+        }
+    }
+}
+
+
