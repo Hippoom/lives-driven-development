@@ -21,11 +21,12 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RequiredArgsConstructor
 @Component
-@ConfigurationProperties(prefix = "rise.academy.jwt")
+@ConfigurationProperties(prefix = "security.jwt")
 public class JwtIssuer {
 
     @Setter
     private String key;
+    @Setter
     private int expireInMinutes = 30;
 
     @NonNull
@@ -70,4 +71,5 @@ public class JwtIssuer {
             super(message, cause);
         }
     }
+
 }
