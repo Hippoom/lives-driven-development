@@ -3,10 +3,13 @@ package com.github.hippoom.ldd.web.security;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.hippoom.ldd.web.rest.assembler.CurrentLoggedInUserResourceAssembler;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -15,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import javax.servlet.Filter;
 
 @Configuration
+@ConfigurationProperties(prefix = "ldd")
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -31,6 +35,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JwtIssuer jwtIssuer;
 
     public static final String API_PATTERN = "/api/**";
+
+    @Setter
+    private String adminPassword;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,6 +56,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrf().disable() // add this back later depends on authentication by session or access token
             .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint());
             // @formatter:on
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("admin")
+                .password(adminPassword)
+                .roles("ACTUATOR");
     }
 
     private Filter weChatMiniAppLoginFilter() {
@@ -81,5 +96,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
         return new RestAuthenticationEntryPoint(halObjectMapper);
     }
-
 }
