@@ -17,6 +17,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @Configuration
 @ConfigurationProperties(prefix = "ldd")
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -54,7 +56,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .addFilterAfter(weChatMiniAppLoginFilter(), CsrfFilter.class)
             .addFilterAfter(weChatMpOAuth2AuthenticationProcessingFilter(), WeChatMiniAppLoginFilter.class)
             .csrf().disable() // add this back later depends on authentication by session or access token
-            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint());
+            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
+        .and()
+            .sessionManagement().sessionCreationPolicy(STATELESS);
             // @formatter:on
     }
 
