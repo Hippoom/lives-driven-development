@@ -43,6 +43,7 @@ public class JpaEventPublisher implements EventPublisher {
                 .setVersion(event.getVersion())
                 .setTeamMemberId(event.getTeamMemberId())
                 .setPayload(payload)
+                .setType(event.getType())
                 .setWhen(now);
     }
 

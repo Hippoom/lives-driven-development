@@ -13,7 +13,7 @@ public class TeamMemberLivesRestoredEvent extends AbstractTeamMemberEvent {
     private final String how;
 
     public TeamMemberLivesRestoredEvent(Long teamMemberId, int version, String how) {
-        super(teamMemberId, version);
+        super(teamMemberId, version, "LivesRestored");
         this.how = how;
     }
 }

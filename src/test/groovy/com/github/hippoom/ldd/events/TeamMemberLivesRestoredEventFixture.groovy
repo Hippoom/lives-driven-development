@@ -10,10 +10,10 @@ import java.time.LocalDateTime
 import static com.github.hippoom.ldd.model.TeamMemberFixture.aTeamMember
 import static java.time.LocalDateTime.now
 
-class TeamMemberLifeConsumedEventFixture {
+class TeamMemberLivesRestoredEventFixture {
     private Long teamMemberId
     private int version
-    private String why
+    private String how
     private Long sequence
     private LocalDateTime when
 
@@ -28,8 +28,8 @@ class TeamMemberLifeConsumedEventFixture {
         this
     }
 
-    def withWhy(String why) {
-        this.why = why
+    def withHow(String how) {
+        this.how = how
         this
     }
 
@@ -42,8 +42,8 @@ class TeamMemberLifeConsumedEventFixture {
         this
     }
 
-    TeamMemberLifeConsumedEvent build() {
-        new TeamMemberLifeConsumedEvent(teamMemberId, version, why)
+    TeamMemberLivesRestoredEvent build() {
+        new TeamMemberLivesRestoredEvent(teamMemberId, version, how)
     }
 
     TeamMemberEvent buildEvent() {
@@ -51,17 +51,17 @@ class TeamMemberLifeConsumedEventFixture {
         return new TeamMemberEvent()
                 .setSequence(sequence)
                 .setVersion(event.getVersion())
-                .setTeamMemberId(event.getTeamMemberId())
                 .setType(event.getType())
+                .setTeamMemberId(event.getTeamMemberId())
                 .setPayload(new ObjectMapper().writeValueAsString(event))
                 .setWhen(when)
     }
 
-    static TeamMemberLifeConsumedEventFixture aLifeConsumedEvent() {
-        new TeamMemberLifeConsumedEventFixture()
+    static TeamMemberLivesRestoredEventFixture aLivesRestoredEvent() {
+        new TeamMemberLivesRestoredEventFixture()
                 .withSequence(Randoms.nextLong())
                 .with(aTeamMember().build())
-                .withWhy("I missed the stand up meeting")
+                .withHow("I bought milk tea for the team on April 1st")
                 .when(now())
     }
 }

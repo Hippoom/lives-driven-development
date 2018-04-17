@@ -31,6 +31,10 @@ public class TeamMemberEvent {
     @JsonIgnore
     @Column
     private Long teamMemberId;
+
+    @Column(name = "EVENT_TYPE")
+    private String type;
+
     @JsonSerialize(using = TeamMemberEventSerializer.class)
     @Column
     private String payload;

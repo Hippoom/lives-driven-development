@@ -16,9 +16,12 @@ public class AbstractTeamMemberEvent {
     @JsonIgnore
     private final int version;
 
-    public AbstractTeamMemberEvent(Long teamMemberId, int version) {
+    private final String type;
+
+    public AbstractTeamMemberEvent(Long teamMemberId, int version, String type) {
         this.teamMemberId = teamMemberId;
         this.version = version;
+        this.type = type;
     }
 
 }

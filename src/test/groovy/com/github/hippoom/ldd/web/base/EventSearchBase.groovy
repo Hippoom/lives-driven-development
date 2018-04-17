@@ -8,8 +8,8 @@ import org.springframework.data.domain.PageRequest
 import java.time.LocalDateTime
 
 import static com.github.hippoom.ldd.events.TeamMemberLifeConsumedEventFixture.aLifeConsumedEvent
+import static com.github.hippoom.ldd.events.TeamMemberLivesRestoredEventFixture.aLivesRestoredEvent
 import static com.github.hippoom.ldd.model.TeamMemberFixture.illidan
-import static com.github.hippoom.tdb.GenericTestDataListBuilder.listOfSize
 
 @WithTyrandeWhisperwind
 abstract class EventSearchBase extends AbstractWebMvcTest {
@@ -18,32 +18,31 @@ abstract class EventSearchBase extends AbstractWebMvcTest {
         def illidan = illidan().build()
         def firstPage = new PageRequest(0, 3)
         def firstPageElements = new PageImpl(
-                listOfSize(3, { aLifeConsumedEvent() })
-                        .number(1,
-                        {
-                            it.withSequence(3)
-                            it.with(illidan)
-                            it.withWhy("I missed the stand up meeting")
-                            it.when(LocalDateTime.of(2018, 4, 1, 17, 0, 0))
-                        })
-                        .number(2,
-                        {
-                            it.withSequence(2)
-                            it.with(illidan)
-                            it.withWhy("I forgot moving the story card")
-                            it.when(LocalDateTime.of(2018, 4, 1, 16, 0, 0))
-                        })
-                        .number(3,
-                        {
-                            it.withSequence(1)
-                            it.with(illidan)
-                            it.withWhy("I missed the show case")
-                            it.when(LocalDateTime.of(2018, 4, 1, 15, 0, 0))
-                        })
-                        .build { it.buildEvent() },
+                [
+                        aLivesRestoredEvent()
+                                .withSequence(3)
+                                .with(illidan)
+                                .withHow("I bought milk tea for the team on April 1st")
+                                .when(LocalDateTime.of(2018, 4, 1, 17, 0, 0))
+                                .buildEvent(),
+                        aLifeConsumedEvent()
+                                .withSequence(2)
+                                .with(illidan)
+                                .withWhy("I forgot moving the story card")
+                                .when(LocalDateTime.of(2018, 4, 1, 16, 0, 0))
+                                .buildEvent(),
+                        aLifeConsumedEvent()
+                                .withSequence(1)
+                                .with(illidan)
+                                .withWhy("I missed the show case")
+                                .when(LocalDateTime.of(2018, 4, 1, 15, 0, 0))
+                                .buildEvent()
+
+                ],
                 firstPage,
                 4
         )
         teamMemberEventQuery.findBy(illidan.getId(), firstPage) >> firstPageElements
     }
+
 }

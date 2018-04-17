@@ -23,13 +23,15 @@ Contract.make {
                                                 .number(1,
                                                 {
                                                     it.when = 1522573200
+                                                    it.type = "LivesRestored"
                                                     it.payload = [
-                                                            why: "I missed the stand up meeting"
+                                                            how: "I bought milk tea for the team on April 1st"
                                                     ]
                                                 })
                                                 .number(2,
                                                 {
                                                     it.when = 1522569600
+                                                    it.type = "LifeConsumed"
                                                     it.payload = [
                                                             why: "I forgot moving the story card"
                                                     ]
@@ -37,6 +39,7 @@ Contract.make {
                                                 .number(3,
                                                 {
                                                     it.when = 1522566000
+                                                    it.type = "LifeConsumed"
                                                     it.payload = [
                                                             why: "I missed the show case"
                                                     ]
