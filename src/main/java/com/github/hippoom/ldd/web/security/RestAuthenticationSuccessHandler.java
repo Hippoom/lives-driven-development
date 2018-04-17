@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 
 import static com.github.hippoom.ldd.web.security.HttpResponseRenderer.reply;
 import static org.springframework.http.HttpStatus.OK;
@@ -20,13 +21,24 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @NonNull
     private final ObjectMapper objectMapper;
     @NonNull
+    private final JwtIssuer jwtIssuer;
+    @NonNull
     private final CurrentLoggedInUserResourceAssembler currentLoggedInUserResourceAssembler;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        reply(response, OK,
-                objectMapper.writeValueAsString(currentLoggedInUserResourceAssembler.toResource(authentication)));
+        WeChatMiniAppAuthentication weChatMiniAppAuthentication = (WeChatMiniAppAuthentication) authentication;
+        reply(
+                response,
+                OK,
+                new HashMap<String, String>() {
+                    {
+                        put("Authorization", "Bearer " + jwtIssuer.generateWith(weChatMiniAppAuthentication));
+                    }
+                },
+                objectMapper.writeValueAsString(currentLoggedInUserResourceAssembler.toResource(authentication))
+        );
     }
 
 }

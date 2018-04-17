@@ -8,6 +8,7 @@ import org.springframework.hateoas.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @RequiredArgsConstructor
-public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint, LogoutSuccessHandler {
+public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint, LogoutSuccessHandler, AuthenticationFailureHandler {
 
     @NonNull
     private final ObjectMapper objectMapper;
@@ -34,6 +35,12 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint, L
     }
 
     @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException {
+        doReply(response);
+    }
+
+    @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         log.debug(authException.getMessage(), authException);
@@ -41,7 +48,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint, L
     }
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                Authentication authentication) throws IOException {
         doReply(response);
     }
 }

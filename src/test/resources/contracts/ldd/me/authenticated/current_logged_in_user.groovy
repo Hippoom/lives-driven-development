@@ -8,6 +8,7 @@ Contract.make {
         url '/api/currentLoggedInUser'
         headers {
             contentType('application/json;charset=UTF-8')
+            header "Authorization": ($(producer("Bearer Tyrande")))
         }
     }
     response {

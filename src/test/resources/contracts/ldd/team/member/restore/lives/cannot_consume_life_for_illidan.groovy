@@ -8,6 +8,7 @@ Contract.make {
         url $(producer("/api/teamMembers/consumeMyLife"))
         headers {
             contentType('application/json;charset=UTF-8')
+            header "Authorization": ($(producer("Bearer Illidan")))
         }
         body(
                 [

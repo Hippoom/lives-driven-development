@@ -5,13 +5,16 @@ import org.springframework.cloud.contract.spec.Contract
 Contract.make {
     request {
         method 'POST'
-        url "/loginViaWeChatMiniApp?code=aWeChatMiniAppLoginCode"
+        url $(producer("/loginViaWeChatMiniApp?code=Tyrande"))
         headers {
             contentType('application/json;charset=UTF-8')
         }
     }
     response {
         status 200
+        headers {
+            header 'Authorization': "Bearer Tyrande"
+        }
         body(
                 [
                         _links: [

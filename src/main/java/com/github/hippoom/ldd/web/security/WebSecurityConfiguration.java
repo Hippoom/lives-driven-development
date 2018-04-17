@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
 
@@ -26,6 +27,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CurrentLoggedInUserResourceAssembler currentLoggedInUserResourceAssembler;
 
+    @Autowired
+    private JwtIssuer jwtIssuer;
+
     public static final String API_PATTERN = "/api/**";
 
     @Override
@@ -41,6 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logoutSuccessHandler(restAuthenticationEntryPoint())
         .and()
             .addFilterAfter(weChatMiniAppLoginFilter(), CsrfFilter.class)
+            .addFilterAfter(weChatMpOAuth2AuthenticationProcessingFilter(), WeChatMiniAppLoginFilter.class)
             .csrf().disable() // add this back later depends on authentication by session or access token
             .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint());
             // @formatter:on
@@ -53,9 +58,23 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    private Filter weChatMpOAuth2AuthenticationProcessingFilter() {
+
+        JwtAuthenticationProcessingFilter filter =
+                new JwtAuthenticationProcessingFilter(
+                        new AntPathRequestMatcher(API_PATTERN)
+                );
+        filter.setJwtIssuer(jwtIssuer);
+        filter.setAuthenticationSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+            // does nothing, just let the request pass
+        });
+        filter.setAuthenticationFailureHandler(restAuthenticationEntryPoint());
+        return filter;
+    }
+
     @Bean
     protected RestAuthenticationSuccessHandler restAuthenticationSuccessHandler() {
-        return new RestAuthenticationSuccessHandler(halObjectMapper, currentLoggedInUserResourceAssembler);
+        return new RestAuthenticationSuccessHandler(halObjectMapper, jwtIssuer, currentLoggedInUserResourceAssembler);
     }
 
     @Bean

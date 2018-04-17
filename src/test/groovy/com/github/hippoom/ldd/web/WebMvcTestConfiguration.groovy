@@ -5,6 +5,7 @@ import com.github.hippoom.ldd.commandhandling.TeamMemberCommandHandler
 import com.github.hippoom.ldd.eventhandling.TeamMemberEventQuery
 import com.github.hippoom.ldd.model.TeamMemberRepository
 import com.github.hippoom.ldd.time.Clock
+import com.github.hippoom.ldd.web.security.JwtIssuer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -41,6 +42,11 @@ class WebMvcTestConfiguration {
     @Bean
     Clock clock() {
         new Clock()
+    }
+
+    @Bean
+    JwtIssuer jwtIssuer() {
+        factory.Mock(JwtIssuer)
     }
 
 }

@@ -10,6 +10,7 @@ Contract.make {
         url $(producer("/api/teamMembers/search?page=0&size=3"))
         headers {
             contentType('application/json;charset=UTF-8')
+            header "Authorization": ($(producer("Bearer Tyrande")))
         }
     }
     response {
