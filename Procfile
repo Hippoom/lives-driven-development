@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/lives-driven-development.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/ldd-backend.jar.jar
