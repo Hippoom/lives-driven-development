@@ -34,4 +34,9 @@ public class JpaTeamMemberEventQuery implements TeamMemberEventQuery {
                 query.fetchCount()
         );
     }
+
+    @Override
+    public Page<TeamMemberEvent> findBy(Long teamMemberId, Pageable pageable) {
+        return null;
+    }
 }

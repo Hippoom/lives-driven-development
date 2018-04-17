@@ -19,6 +19,9 @@ Contract.make {
                         _links        : [
                                 restoreMyLives: [
                                         href: $(producer("http://localhost/api/teamMembers/restoreMyLives"))
+                                ],
+                                events        : [
+                                        href: $(producer("http://localhost/api/teamMembers/3/events"))
                                 ]
                         ]
                 ]

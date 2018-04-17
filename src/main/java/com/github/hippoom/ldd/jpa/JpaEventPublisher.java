@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Transactional
@@ -36,12 +37,14 @@ public class JpaEventPublisher implements EventPublisher {
     @SneakyThrows
     private TeamMemberEvent from(AbstractTeamMemberEvent event) {
         long sequence = nextSequence();
+        LocalDateTime now = clock.now();
+        String payload = objectMapper.writeValueAsString(event);
         return new TeamMemberEvent()
                 .setSequence(sequence)
                 .setVersion(event.getVersion())
                 .setOpenId(event.getOpenId())
-                .setPayload(objectMapper.writeValueAsString(event))
-                .setWhen(clock.now());
+                .setPayload(payload)
+                .setWhen(now);
     }
 
     private long nextSequence() {

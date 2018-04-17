@@ -79,6 +79,8 @@ public class TeamMemberController {
     private Resource<TeamMember> toResource(@CurrentLoggedInUser TeamMember me) {
         Resource<TeamMember> resource = new Resource<>(me);
         resource.add(me.hasRemainingLives() ? linkToConsumeMyLife() : linkToRestoreMyLives());
+        resource.add(linkTo(methodOn(TeamMemberEventController.class).search(me.getId(), null))
+                .withRel("events"));
         return resource;
     }
 
