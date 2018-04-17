@@ -17,6 +17,7 @@ import javax.persistence.Version;
 public class TeamMember {
     public static final int DEFAULT_LIVES = 3;
     @Id
+    @JsonIgnore
     private Long id;
 
     @Column

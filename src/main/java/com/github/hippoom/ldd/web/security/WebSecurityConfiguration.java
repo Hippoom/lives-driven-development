@@ -4,6 +4,7 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.hippoom.ldd.web.rest.assembler.CurrentLoggedInUserResourceAssembler;
 import lombok.Setter;
+import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,7 +21,7 @@ import javax.servlet.Filter;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
-@ConfigurationProperties(prefix = "ldd")
+@ConfigurationProperties(prefix = "security")
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -40,6 +41,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Setter
     private String adminPassword;
+    @Setter
+    private String hashidsSalt;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -99,5 +102,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     protected RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
         return new RestAuthenticationEntryPoint(halObjectMapper);
+    }
+
+    @Bean
+    protected Hashids hashids() {
+        return new Hashids(hashidsSalt);
     }
 }

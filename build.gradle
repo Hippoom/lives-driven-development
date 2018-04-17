@@ -78,6 +78,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-security"
     testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.3.RELEASE'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.6.0'
+    compile 'org.hashids:hashids:1.0.3'
 
     // jdbc
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'

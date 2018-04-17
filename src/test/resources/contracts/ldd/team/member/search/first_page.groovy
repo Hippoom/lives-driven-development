@@ -26,7 +26,7 @@ Contract.make {
                                                     it.remainingLives = 3
                                                     it._links = [
                                                             self: [
-                                                                  href: "http://localhost/api/teamMembers/1"
+                                                                  href: "http://localhost/api/teamMembers/oW"
                                                             ]
                                                     ]
                                                 })
@@ -36,7 +36,7 @@ Contract.make {
                                                     it.remainingLives = 2
                                                     it._links = [
                                                             self: [
-                                                                    href: "http://localhost/api/teamMembers/2"
+                                                                    href: "http://localhost/api/teamMembers/nm"
                                                             ]
                                                     ]
                                                 })
@@ -46,7 +46,7 @@ Contract.make {
                                                     it.remainingLives = 0
                                                     it._links = [
                                                             self: [
-                                                                    href: "http://localhost/api/teamMembers/3"
+                                                                    href: "http://localhost/api/teamMembers/Vp"
                                                             ]
                                                     ]
                                                 })

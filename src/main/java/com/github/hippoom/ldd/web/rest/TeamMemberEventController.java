@@ -4,6 +4,7 @@ import com.github.hippoom.ldd.eventhandling.TeamMemberEvent;
 import com.github.hippoom.ldd.eventhandling.TeamMemberEventQuery;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hashids.Hashids;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -27,10 +28,13 @@ public class TeamMemberEventController {
     @NonNull
     private final PagedResourcesAssembler<TeamMemberEvent> pagedResourcesAssembler;
 
+    @NonNull
+    private final Hashids hashids;
+
     @GetMapping(path = "/{id}/events")
     public PagedResources<Resource<TeamMemberEvent>> search(
-            @PathVariable Long id,
+            @PathVariable String id,
             @PageableDefault(size = 15) Pageable pageable) {
-        return pagedResourcesAssembler.toResource(teamMemberEventQuery.findBy(id, pageable));
+        return pagedResourcesAssembler.toResource(teamMemberEventQuery.findBy(hashids.decode(id)[0], pageable));
     }
 }

@@ -9,6 +9,7 @@ import com.github.hippoom.ldd.web.security.annotation.CurrentLoggedInUser;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hashids.Hashids;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -45,6 +46,9 @@ public class TeamMemberController {
     @NonNull
     private final PagedResourcesAssembler<TeamMember> pagedResourcesAssembler;
 
+    @NonNull
+    private final Hashids hashids;
+
     @SuppressFBWarnings(value = "NP", justification = "it is intended for assembling template link")
     @GetMapping
     public Resource<String> root() {
@@ -60,7 +64,7 @@ public class TeamMemberController {
     public PagedResources<Resource<TeamMember>> search(@PageableDefault(size = 15) Pageable pageable) {
         Page<TeamMember> paged = teamMemberRepository.findBy(pageable);
         PagedResources<Resource<TeamMember>> resources = pagedResourcesAssembler.toResource(paged);
-        resources.forEach(r -> r.add(linkTo(methodOn(TeamMemberController.class).findBy(r.getContent().getId())).withSelfRel()));
+        resources.forEach(r -> r.add(linkTo(methodOn(TeamMemberController.class).findBy(hashids.encode(r.getContent().getId()))).withSelfRel()));
         return resources;
     }
 
@@ -72,14 +76,14 @@ public class TeamMemberController {
 
     @SuppressWarnings("ConstantConditions")
     @GetMapping(path = "/{id}")
-    public Resource<TeamMember> findBy(@PathVariable Long id) {
-        return toResource(teamMemberRepository.mustFindBy(id));
+    public Resource<TeamMember> findBy(@PathVariable String id) {
+        return toResource(teamMemberRepository.mustFindBy(hashids.decode(id)[0]));
     }
 
     private Resource<TeamMember> toResource(@CurrentLoggedInUser TeamMember me) {
         Resource<TeamMember> resource = new Resource<>(me);
         resource.add(me.hasRemainingLives() ? linkToConsumeMyLife() : linkToRestoreMyLives());
-        resource.add(linkTo(methodOn(TeamMemberEventController.class).search(me.getId(), null))
+        resource.add(linkTo(methodOn(TeamMemberEventController.class).search(hashids.encode(me.getId()), null))
                 .withRel("events"));
         return resource;
     }

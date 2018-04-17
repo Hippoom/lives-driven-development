@@ -7,7 +7,7 @@ import static com.github.hippoom.tdb.GenericTestDataListBuilder.listOfSize
 Contract.make {
     request {
         method 'GET'
-        url $(producer("/api/teamMembers/3/events?page=0&size=3"))
+        url $(producer("/api/teamMembers/Vp/events?page=0&size=3"))
         headers {
             contentType('application/json;charset=UTF-8')
             header "Authorization": ($(producer("Bearer Tyrande")))
@@ -49,7 +49,7 @@ Contract.make {
                         ],
                         _links   : [
                                 next: [
-                                        href: $(producer("http://localhost/api/teamMembers/3/events?page=1&size=3"))
+                                        href: $(producer("http://localhost/api/teamMembers/Vp/events?page=1&size=3"))
                                 ]
                         ]
                 ]

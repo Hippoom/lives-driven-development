@@ -5,7 +5,7 @@ import org.springframework.cloud.contract.spec.Contract
 Contract.make {
     request {
         method 'GET'
-        url $(producer("/api/teamMembers/3"))
+        url $(producer("/api/teamMembers/Vp"))
         headers {
             contentType('application/json;charset=UTF-8')
             header "Authorization": ($(producer("Bearer Tyrande")))
@@ -22,7 +22,7 @@ Contract.make {
                                         href: $(producer("http://localhost/api/teamMembers/restoreMyLives"))
                                 ],
                                 events        : [
-                                        href: $(producer("http://localhost/api/teamMembers/3/events"))
+                                        href: $(producer("http://localhost/api/teamMembers/Vp/events"))
                                 ]
                         ]
                 ]
