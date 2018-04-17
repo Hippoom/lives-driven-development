@@ -23,20 +23,15 @@ public class JpaTeamMemberEventQuery implements TeamMemberEventQuery {
     private final EntityManager entityManager;
 
     @Override
-    public Page<TeamMemberEvent> findBy(String openId, Pageable pageable) {
+    public Page<TeamMemberEvent> findBy(Long teamMemberId, Pageable pageable) {
         JPAQuery<TeamMemberEvent> query = new JPAQuery<TeamMemberEvent>(entityManager)
                 .from(teamMemberEvent)
-                .where(teamMemberEvent.openId.eq(openId))
+                .where(teamMemberEvent.teamMemberId.eq(teamMemberId))
                 .orderBy(teamMemberEvent.sequence.desc());
         return new PageImpl<>(
                 query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch(),
                 pageable,
                 query.fetchCount()
         );
-    }
-
-    @Override
-    public Page<TeamMemberEvent> findBy(Long teamMemberId, Pageable pageable) {
-        return null;
     }
 }

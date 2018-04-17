@@ -12,8 +12,8 @@ public class TeamMemberLivesRestoredEvent extends AbstractTeamMemberEvent {
     @NonNull
     private final String how;
 
-    public TeamMemberLivesRestoredEvent(String openId, int version, String how) {
-        super(openId, version);
+    public TeamMemberLivesRestoredEvent(Long teamMemberId, int version, String how) {
+        super(teamMemberId, version);
         this.how = how;
     }
 }

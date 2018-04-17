@@ -11,7 +11,7 @@ import static com.github.hippoom.ldd.model.TeamMemberFixture.aTeamMember
 import static java.time.LocalDateTime.now
 
 class TeamMemberLifeConsumedEventFixture {
-    private String openId
+    private Long teamMemberId
     private int version
     private String why
     private Long sequence
@@ -23,7 +23,7 @@ class TeamMemberLifeConsumedEventFixture {
     }
 
     def with(TeamMember member) {
-        this.openId = member.getOpenId()
+        this.teamMemberId = member.getId()
         this.version = member.version
         this
     }
@@ -43,7 +43,7 @@ class TeamMemberLifeConsumedEventFixture {
     }
 
     TeamMemberLifeConsumedEvent build() {
-        new TeamMemberLifeConsumedEvent(openId, version, why)
+        new TeamMemberLifeConsumedEvent(teamMemberId, version, why)
     }
 
     TeamMemberEvent buildEvent() {
@@ -51,7 +51,7 @@ class TeamMemberLifeConsumedEventFixture {
         return new TeamMemberEvent()
                 .setSequence(sequence)
                 .setVersion(event.getVersion())
-                .setOpenId(event.getOpenId())
+                .setTeamMemberId(event.getTeamMemberId())
                 .setPayload(new ObjectMapper().writeValueAsString(event))
                 .setWhen(when)
     }

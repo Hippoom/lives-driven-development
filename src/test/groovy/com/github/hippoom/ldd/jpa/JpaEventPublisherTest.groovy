@@ -22,46 +22,46 @@ class JpaEventPublisherTest extends AbstractJpaTest {
     def "it should save TeamMemberLifeConsumedEvent"() {
         given:
         def me = aTeamMember().build()
-        def event = new TeamMemberLifeConsumedEvent(me.getOpenId(), me.version, "why")
+        def event = new TeamMemberLifeConsumedEvent(me.getId(), me.version, "why")
 
         and:
         def pageable = new PageRequest(0, 2)
-        def before = teamMemberEventQuery.findBy(me.getOpenId(), pageable)
+        def before = teamMemberEventQuery.findBy(me.getId(), pageable)
 
         when:
         subject.publish(event)
 
         then:
-        def after = teamMemberEventQuery.findBy(me.getOpenId(), pageable)
+        def after = teamMemberEventQuery.findBy(me.getId(), pageable)
 
         assert after.totalElements == before.totalElements + 1
         assertSorting(after, { TeamMemberEvent current, TeamMemberEvent next ->
             current.getSequence() >= next.getSequence()
         }, { Pageable nextPage ->
-            subject.findBy(me.getOpenId(), nextPage)
+            subject.findBy(me.getId(), nextPage)
         })
     }
 
     def "it should save TeamMemberLivesRestoredEvent"() {
         given:
         def me = aTeamMember().build()
-        def event = new TeamMemberLivesRestoredEvent(me.getOpenId(), me.version, "how")
+        def event = new TeamMemberLivesRestoredEvent(me.getId(), me.version, "how")
 
         and:
         def pageable = new PageRequest(0, 2)
-        def before = teamMemberEventQuery.findBy(me.getOpenId(), pageable)
+        def before = teamMemberEventQuery.findBy(me.getId(), pageable)
 
         when:
         subject.publish(event)
 
         then:
-        def after = teamMemberEventQuery.findBy(me.getOpenId(), pageable)
+        def after = teamMemberEventQuery.findBy(me.getId(), pageable)
 
         assert after.totalElements == before.totalElements + 1
         assertSorting(after, { TeamMemberEvent current, TeamMemberEvent next ->
             current.getSequence() >= next.getSequence()
         }, { Pageable nextPage ->
-            subject.findBy(me.getOpenId(), nextPage)
+            subject.findBy(me.getId(), nextPage)
         })
     }
 }

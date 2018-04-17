@@ -12,8 +12,8 @@ public class TeamMemberLifeConsumedEvent extends AbstractTeamMemberEvent {
     @NonNull
     private final String why;
 
-    public TeamMemberLifeConsumedEvent(String openId, int version, String reason) {
-        super(openId, version);
+    public TeamMemberLifeConsumedEvent(Long teamMemberId, int version, String reason) {
+        super(teamMemberId, version);
         this.why = reason;
     }
 }

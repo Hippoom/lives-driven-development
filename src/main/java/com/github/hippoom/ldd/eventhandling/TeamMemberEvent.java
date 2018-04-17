@@ -1,6 +1,5 @@
 package com.github.hippoom.ldd.eventhandling;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.hippoom.ldd.json.LocalDateTimeSerializer;
@@ -13,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.NUMBER;
 
 @Entity
 @Table
@@ -33,7 +30,7 @@ public class TeamMemberEvent {
     private int version;
     @JsonIgnore
     @Column
-    private String openId;
+    private Long teamMemberId;
     @JsonSerialize(using = TeamMemberEventSerializer.class)
     @Column
     private String payload;

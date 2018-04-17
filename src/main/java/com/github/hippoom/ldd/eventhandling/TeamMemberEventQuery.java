@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface TeamMemberEventQuery {
 
-    Page<TeamMemberEvent> findBy(String openId, Pageable pageable);
-
     Page<TeamMemberEvent> findBy(Long teamMemberId, Pageable pageable);
+
 }

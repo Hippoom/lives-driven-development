@@ -35,7 +35,7 @@ class TeamMemberCommandHandlerTest extends Specification {
         assert after.remainingLives == before - 1
 
         and:
-        1 * eventPublisher.publish(new TeamMemberLifeConsumedEvent(me.getOpenId(), me.getVersion(), command.getWhy()))
+        1 * eventPublisher.publish(new TeamMemberLifeConsumedEvent(me.getId(), me.getVersion(), command.getWhy()))
     }
 
     def "it should throw exception when handling ConsumeMyLifeCommand given not enough lives"() {
@@ -63,6 +63,6 @@ class TeamMemberCommandHandlerTest extends Specification {
 
         then: "3 lives is restored"
         assert after.remainingLives == 3
-        1 * eventPublisher.publish(new TeamMemberLivesRestoredEvent(me.getOpenId(), me.getVersion(), command.getHow()))
+        1 * eventPublisher.publish(new TeamMemberLivesRestoredEvent(me.getId(), me.getVersion(), command.getHow()))
     }
 }

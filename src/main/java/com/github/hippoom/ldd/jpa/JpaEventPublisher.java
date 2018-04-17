@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class JpaEventPublisher implements EventPublisher {
         return new TeamMemberEvent()
                 .setSequence(sequence)
                 .setVersion(event.getVersion())
-                .setOpenId(event.getOpenId())
+                .setTeamMemberId(event.getTeamMemberId())
                 .setPayload(payload)
                 .setWhen(now);
     }
