@@ -4,7 +4,7 @@ buildscript {
         hibernateVersion = '5.0.12.Final'
         spockVersion = '1.1-groovy-2.4'
         springCloudContractVersion = "1.2.3.RELEASE"
-        testDataBuilderVersion = '0.4.1'
+        testDataBuilderVersion = '0.5.0'
     }
 
     dependencies {
