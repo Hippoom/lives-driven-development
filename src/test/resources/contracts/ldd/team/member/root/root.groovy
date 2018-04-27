@@ -7,12 +7,14 @@ Contract.make {
         method 'GET'
         url '/api/teamMembers'
         headers {
-            contentType('application/json;charset=UTF-8')
             header "Authorization": ($(producer("Bearer Tyrande")))
         }
     }
     response {
         status 200
+        headers {
+            contentType('application/json;charset=UTF-8')
+        }
         body([
                 _links: [
                         search: [

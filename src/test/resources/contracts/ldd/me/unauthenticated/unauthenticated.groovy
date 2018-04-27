@@ -6,12 +6,12 @@ Contract.make {
     request {
         method 'GET'
         url '/api/currentLoggedInUser'
-        headers {
-            contentType('application/json;charset=UTF-8')
-        }
     }
     response {
         status 401
+        headers {
+            contentType('application/json;charset=UTF-8')
+        }
         body([
                 _links: [
                         loginViaWeChatMiniApp: [

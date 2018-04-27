@@ -10,6 +10,6 @@ services:
       - STUBRUNNER_IDS=com.github.hippoom:ldd-backend-stubs:+:9999
       # - STUBRUNNER_REPOSITORY_ROOT=http://localhost:8081/repository/maven-releases/
       # - STUBRUNNER_USERNAME=admin
-      # - STUBRUNNER_USERNAME=admßin123
+      # - STUBRUNNER_USERNAME=admin123
       - STUBRUNNER_STUBS_MODE=LOCAL
       # - STUBRUNNER_WORK_OFFLINE=true

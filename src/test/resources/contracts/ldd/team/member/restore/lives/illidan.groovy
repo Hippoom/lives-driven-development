@@ -18,6 +18,9 @@ Contract.make {
     }
     response {
         status 200
+        headers {
+            contentType('application/json;charset=UTF-8')
+        }
         body(
                 [
                         displayName   : "Illidan Stormrage",
