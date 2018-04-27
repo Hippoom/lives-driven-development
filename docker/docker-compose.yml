@@ -1,0 +1,15 @@
+version: '3'
+services:
+  spring-contract-stub-runner:
+    image: springcloud/spring-cloud-contract-stub-runner:1.2.4.RELEASE
+    volumes:
+      - ~/.m2:/root/.m2
+    ports:
+      - "9999:9999"
+    environment:
+      - STUBRUNNER_IDS=com.github.hippoom:ldd-backend-stubs:+:9999
+      # - STUBRUNNER_REPOSITORY_ROOT=http://localhost:8081/repository/maven-releases/
+      # - STUBRUNNER_USERNAME=admin
+      # - STUBRUNNER_USERNAME=admßin123
+      - STUBRUNNER_STUBS_MODE=LOCAL
+      # - STUBRUNNER_WORK_OFFLINE=true
