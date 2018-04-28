@@ -47,13 +47,9 @@ public class JwtIssuer {
     public WeChatMiniAppAuthentication verify(String jwt) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt);
-            ZonedDateTime now = clock.nowWithZone();
-            ZonedDateTime expiration = clock.of(claims.getBody().getExpiration());
-            if (now.isAfter(expiration)) {
-                throw new JwtVerificationException("The token has been expired");// should I return expect and actual?
-            }
             WeChatMiniAppAuthentication authentication = new WeChatMiniAppAuthentication();
             authentication.setOpenId(claims.getBody().getSubject());
+            authentication.setAuthenticated(true);
             return authentication;
             //OK, we can trust this JWT
         } catch (Exception err) {
