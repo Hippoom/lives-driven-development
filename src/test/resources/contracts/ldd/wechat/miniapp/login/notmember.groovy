@@ -6,12 +6,12 @@ Contract.make {
     ignored()
     request {
         method 'POST'
-        url $(producer("/loginViaWeChatMiniApp?code=Tyrande"))
+        url $(producer("/loginViaWeChatMiniApp?code=notmember"))
     }
     response {
         status 200
         headers {
-            header 'Authorization': "Bearer Tyrande"
+            header 'Authorization': "Bearer notmember"
             contentType('application/json')
         }
         body(
@@ -19,9 +19,6 @@ Contract.make {
                         _links: [
                                 teamMembers: [
                                         href: $(producer("http://localhost/api/teamMembers"))
-                                ],
-                                me: [
-                                        href: $(producer("http://localhost/api/currentLoggedInUser"))
                                 ]
                         ]
                 ]
